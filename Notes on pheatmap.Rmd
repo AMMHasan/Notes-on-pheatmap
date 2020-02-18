@@ -1,0 +1,122 @@
+---
+title: "Notes on pheatmap"
+output: html_notebook
+---
+
+I will create a matrix of random numbers as a dataset, with arbitrary column names and row names.
+
+To begin with, let's load necessary packages
+
+```{r}
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#   install.packages("BiocManager")
+#
+# BiocManager::install("DESeq")
+library(pheatmap)
+library(RColorBrewer)
+library(tibble)
+library(dplyr)
+library(repr)
+library(viridis)
+```
+
+I'll set a seed for generating 100 random numbers qith a mean of 0 and standard deviation of 1.
+```{r}
+set.seed(1986)
+mat <- matrix(rnorm(100), ncol = 5)
+```
+
+Now, I'm generating row names with 3 small case random letters each and column names with 4 upper case random letters each. The steps are commented out for convenience -
+```{r}
+# sample(letters) # "s" "b" "p" "y" "n" "d" "l" "i" "a" "t" "r" "j" "h" "o" "f" "q" "u" "z" "k" "w" "c" "v" "x" "m" "g" "e"
+# paste(sample(letters), collapse = "") # "dijehquczxagoflnbswtvmkpyr"
+# substr("dijehquczxagoflnbswtvmkpyr", start = 1, stop = 3) # "dij"
+# substr(paste(sample(letters), collapse = ""), start = 1, stop = 3) # "obv"
+# replicate(10, substr(paste(sample(letters), collapse = ""), start = 1, stop = 3)) # "nke" "dot" "owy" "rnm" "yug" "tak" "cdu" "iac" "rpz" "biy"
+
+rownames(mat) <- replicate(
+  n = nrow(mat),
+  expr = substr(paste(sample(letters), collapse = ""),
+    start = 1,
+    stop = 3
+  )
+)
+
+colnames(mat) <- replicate(
+  n = ncol(mat),
+  expr = substr(paste(sample(LETTERS), collapse = ""),
+    start = 1,
+    stop = 4
+  )
+)
+
+```
+
+Adding random levels of 1 and 2 for each of the column variables -
+```{r}
+# sample(c(1,2),5,replace = T)
+# col_group <- data.frame(group=sample(c(1,2),5,replace = T))
+col_group <- data.frame(sample = as.factor(sample(c(1, 2),
+  size = ncol(mat),
+  replace = T
+)))
+
+rownames(col_group) <- colnames(mat) # the row names hree should be the same as the col name of the mat
+
+```
+
+Adding random levels of 1 to 5 for each of the rows -
+```{r}
+row_group <- data.frame(group1 = as.factor(sample(seq(1:5),
+  size = nrow(mat),
+  replace = T
+))) # without the as.factor, the group value will be considered as continuous on the plot
+
+row_group$group2 <- as.factor(sample(seq(1:10),
+  size = nrow(mat),
+  replace = T
+))
+
+rownames(row_group) <- rownames(mat) # the row names hree should be the same as the row name of the mat
+
+```
+
+I want the heatmap to have annotation so that everything is sorted by group1 of the row_group database. Therefore, I have to order the row_group dataframe according to group1 values. I will use this ordered row names to arrange the mat matrix in the pheatmap() function.
+
+```{r}
+# row_group <- row_group %>% tibble::rownames_to_column("x") %>%  dplyr::arrange(by=group1)  %>% tibble::column_to_rownames("x") # with dplyr, the row name is not retained, so I had to use tibble::rownames_to_column("a new col name") to keep the row names and then give it back with tibble::column_to_rownames("the same col name") 
+row_group <- row_group[order(row_group$group1), ] # same can be done by order()
+```
+Let's set the colour for annotations -
+```{r}
+
+# names(sample_colour) <- c(1,2,"")
+# names(group1_colour) <- c(1,2,3,4,5)
+colour_list <- list(
+  group1 = brewer.pal(5, "Set1"),
+  group2 = brewer.pal(10, "Set3"),
+  sample = c("salmon", "cadetblue")
+)
+# make sure that the names of the dataframe in this list matches the levels of corresponding factors, like col_group$sample has only two levels (1,2) and those are numerical.
+names(colour_list$group1) <- seq(1:5) 
+names(colour_list$group2) <- seq(1:10)
+names(colour_list$sample) <- c(1,2)
+```
+
+
+Now plot the heatmap -
+```{r}
+options(repr.plot.width=1, repr.plot.height=3)
+pheatmap(
+  cluster_rows = F, # turning this off to avoid the effect of dendogram and sort the annotation according to group1 of annotation dataframe
+  cluster_cols = T,
+  mat = mat[rownames(row_group), ],
+  color = inferno(n = 10),
+  annotation_row = row_group,
+  annotation_col = col_group,
+  annotation_colors = colour_list,
+  cutree_cols = 2 #cutree_rows won't work as the cluster_rows is set to FALSE
+)
+
+
+```
