@@ -1871,7 +1871,7 @@ names(colour_list$sample) &lt;- c(1,2)</code></pre>
 <p>Now plot the heatmap -</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3B0aW9ucyhyZXByLnBsb3Qud2lkdGg9MSwgcmVwci5wbG90LmhlaWdodD0zKVxucGhlYXRtYXAoXG4gIGNsdXN0ZXJfcm93cyA9IEYsICMgdHVybmluZyB0aGlzIG9mZiB0byBhdm9pZCB0aGUgZWZmZWN0IG9mIGRlbmRvZ3JhbSBhbmQgc29ydCB0aGUgYW5ub3RhdGlvbiBhY2NvcmRpbmcgdG8gZ3JvdXAxIG9mIGFubm90YXRpb24gZGF0YWZyYW1lXG4gIGNsdXN0ZXJfY29scyA9IFQsXG4gIG1hdCA9IG1hdFtyb3duYW1lcyhyb3dfZ3JvdXApLCBdLFxuICBjb2xvciA9IGluZmVybm8obiA9IDEwKSxcbiAgYW5ub3RhdGlvbl9yb3cgPSByb3dfZ3JvdXAsXG4gIGFubm90YXRpb25fY29sID0gY29sX2dyb3VwLFxuICBhbm5vdGF0aW9uX2NvbG9ycyA9IGNvbG91cl9saXN0LFxuICBjdXRyZWVfY29scyA9IDIgI2N1dHJlZV9yb3dzIHdvbid0IHdvcmsgYXMgdGhlIGNsdXN0ZXJfcm93cyBpcyBzZXQgdG8gRkFMU0VcbilcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3B0aW9ucyhyZXByLnBsb3Qud2lkdGg9MSwgcmVwci5wbG90LmhlaWdodD0zKVxucGhlYXRtYXAoXG4gIGNsdXN0ZXJfcm93cyA9IEYsICMgdHVybmluZyB0aGlzIG9mZiB0byBhdm9pZCB0aGUgZWZmZWN0IG9mIGRlbmRvZ3JhbSBhbmQgc29ydCB0aGUgYW5ub3RhdGlvbiBhY2NvcmRpbmcgdG8gZ3JvdXAxIG9mIGFubm90YXRpb24gZGF0YWZyYW1lXG4gIGNsdXN0ZXJfY29scyA9IFQsXG4gIG1hdCA9IG1hdFtyb3duYW1lcyhyb3dfZ3JvdXApLCBdLFxuICBjb2xvciA9IGluZmVybm8obiA9IDEwKSxcbiAgYW5ub3RhdGlvbl9yb3cgPSByb3dfZ3JvdXAsXG4gIGFubm90YXRpb25fY29sID0gY29sX2dyb3VwLFxuICBhbm5vdGF0aW9uX2NvbG9ycyA9IGNvbG91cl9saXN0LFxuICBjdXRyZWVfY29scyA9IDIgI2N1dHJlZV9yb3dzIHdvbid0IHdvcmsgYXMgdGhlIGNsdXN0ZXJfcm93cyBpcyBzZXQgdG8gRkFMU0UgaGVyZVxuKVxuYGBgIn0= -->
 <pre class="r"><code>options(repr.plot.width=1, repr.plot.height=3)
 pheatmap(
   cluster_rows = F, # turning this off to avoid the effect of dendogram and sort the annotation according to group1 of annotation dataframe
@@ -1881,7 +1881,7 @@ pheatmap(
   annotation_row = row_group,
   annotation_col = col_group,
   annotation_colors = colour_list,
-  cutree_cols = 2 #cutree_rows won't work as the cluster_rows is set to FALSE
+  cutree_cols = 2 #cutree_rows won't work as the cluster_rows is set to FALSE here
 )</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-plot-begin eyJjb25kaXRpb25zIjpbXSwiaGVpZ2h0Ijo0MzIuNjMyOSwic2l6ZV9iZWhhdmlvciI6MCwid2lkdGgiOjcwMH0= -->
