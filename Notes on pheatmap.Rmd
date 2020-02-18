@@ -115,7 +115,7 @@ pheatmap(
   annotation_row = row_group,
   annotation_col = col_group,
   annotation_colors = colour_list,
-  cutree_cols = 2 #cutree_rows won't work as the cluster_rows is set to FALSE
+  cutree_cols = 2 #cutree_rows won't work as the cluster_rows is set to FALSE here
 )
 
 
